@@ -1,17 +1,48 @@
 <template>
   <div class="quote-view">
     <button class="back-btn" @click="goBack">← Menu</button>
-    <h2>Quote Mode</h2>
-    <p>This is the Quote mode page.</p>
+    <h1>{{ question }}</h1>
+    <h3>"{{ characterQuote }}"</h3>
+    <GuessInput @submit="handleGuess" :success="isCorrect" />
+    <ul class="guess-list">
+      <li v-for="(item, idx) in [...guessHistory].reverse()" :key="idx" :class="item.correct ? 'guess-correct' : 'guess-wrong'">
+        {{ item.value }}
+      </li>
+    </ul>
   </div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { getDailyQuote } from '../api'
+import GuessInput from '@/components/GuessInput.vue'
 const router = useRouter()
+const question = ref('')
+const answer = ref('')
+const characterQuote = ref('')
+const isCorrect = ref(false)
+const guessHistory = ref([])
+
 function goBack() {
   router.push({ name: 'home' })
 }
+
+function handleGuess(guess) {
+  const correct = guess.trim().toLowerCase() === answer.value.trim().toLowerCase()
+  isCorrect.value = correct
+  guessHistory.value.push({ value: guess, correct })
+}
+
+onMounted(async () => {
+  const quote = await getDailyQuote()
+  question.value = quote.question
+  characterQuote.value = quote.quotes
+  answer.value = quote.character
+  console.log('Question:', question.value)
+  console.log('Character Quote:', characterQuote.value)
+  console.log('Answer:', answer.value)
+})
 </script>
 
 <style scoped>
@@ -37,5 +68,25 @@ function goBack() {
 }
 .back-btn:hover {
   background: #444;
+}
+.guess-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 24px;
+  width: 240px;
+}
+.guess-list li {
+  padding: 8px 0;
+  font-size: 1.1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+.guess-correct {
+  color: #1a7f1a;
+  font-weight: bold;
+}
+.guess-wrong {
+  color: #c00;
+  font-weight: bold;
 }
 </style> 
