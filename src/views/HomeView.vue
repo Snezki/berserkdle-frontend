@@ -1,10 +1,9 @@
 <template>
   <div class="home-view">
-    <img src="@/assets/logo.png" alt="Berserkdle Logo" class="logo" />
-    <h1>Berserkdle</h1>
+    <img src="@/assets/logo-removebg-preview.png" alt="Berserkdle Logo" class="logo" />
     <div class="menu-buttons">
       <button v-for="mode in modes" :key="mode.name" @click="selectMode(mode)">
-        <img :src="mode.icon" :alt="mode.label" class="mode-icon" />
+        <img v-if="mode.icon" :src="mode.icon" :alt="mode.label" class="mode-icon" />
         <span>{{ mode.label }}</span>
       </button>
     </div>
@@ -17,8 +16,8 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const modes = [
-  { name: 'classic', label: 'Classic', icon: require('@/assets/classic.svg') },
-  { name: 'quote', label: 'Quote', icon: require('@/assets/quote.svg') },
+  { name: 'classic', label: 'Classic', icon: '' },
+  { name: 'quote', label: 'Quote', icon: '' },
   // Add more modes as needed
 ]
 
@@ -35,7 +34,7 @@ function selectMode(mode) {
   margin-top: 60px;
 }
 .logo {
-  width: 100px;
+  width: 380px;
   margin-bottom: 20px;
 }
 .menu-buttons {
