@@ -1,33 +1,67 @@
 <template>
-  <div class="home">
-    <HelloWorld msg="WELCOME TO BERSERKDLE"/>
-    <div v-if="dailyQuestion">
-      <h2>Today's Question</h2>
-      <p>{{ dailyQuestion.question }}</p>
-      <p>{{ dailyQuestion.quotes }}</p>
-    </div>
-    <div v-else>
-      <p>Loading...</p>
+  <div class="home-view">
+    <img src="@/assets/logo.png" alt="Berserkdle Logo" class="logo" />
+    <h1>Berserkdle</h1>
+    <div class="menu-buttons">
+      <button v-for="mode in modes" :key="mode.name" @click="selectMode(mode)">
+        <img :src="mode.icon" :alt="mode.label" class="mode-icon" />
+        <span>{{ mode.label }}</span>
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import HelloWorld from '@/components/HelloWorld.vue'
-import { ref, onMounted } from 'vue'
-import { getDailyQuestionCharacter } from '@/api'
+import { useRouter } from 'vue-router'
 
-const dailyQuestion = ref(null)
-const fetchDailyQuestion = async () => {
-  try {
-    const data = await getDailyQuestionCharacter()
-    dailyQuestion.value = data
-  } catch (error) {
-    console.error('Error fetching daily question: ', error)
-  }
+const router = useRouter()
+
+const modes = [
+  { name: 'classic', label: 'Classic', icon: require('@/assets/classic.svg') },
+  { name: 'quote', label: 'Quote', icon: require('@/assets/quote.svg') },
+  // Add more modes as needed
+]
+
+function selectMode(mode) {
+  router.push({ name: mode.name })
 }
-
-onMounted(() => {
-  fetchDailyQuestion()
-})
 </script>
+
+<style scoped>
+.home-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 60px;
+}
+.logo {
+  width: 100px;
+  margin-bottom: 20px;
+}
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+}
+button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 12px;
+  background: #222;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #444;
+}
+.mode-icon {
+  width: 32px;
+  height: 32px;
+}
+</style>
