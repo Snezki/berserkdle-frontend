@@ -9,6 +9,7 @@
         :class="{ 'success-bg': props.success }"
         @focus="showSuggestions = true; fetchSuggestions()"
         @input="showSuggestions = true"
+        @keydown="handleKeydown"
         autocomplete="off"
       />
       <ul v-if="filteredSuggestions.length && guess && showSuggestions" class="suggestions-list">
@@ -76,6 +77,13 @@ function selectSuggestion(suggestion) {
 function handleClickOutside(event) {
   if (root.value && !root.value.contains(event.target)) {
     showSuggestions.value = false
+  }
+}
+
+function handleKeydown(event) {
+  if (event.key === 'Tab' && showSuggestions.value && filteredSuggestions.value.length) {
+    event.preventDefault()
+    selectSuggestion(filteredSuggestions.value[0])
   }
 }
 
