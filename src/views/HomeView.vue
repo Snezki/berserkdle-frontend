@@ -12,18 +12,28 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import { createDailyQuestions } from '../api'
 
 const router = useRouter()
 
 const modes = [
   { name: 'classic', label: 'Classic', icon: '' },
   { name: 'quote', label: 'Quote', icon: '' },
-  // Add more modes as needed
 ]
 
 function selectMode(mode) {
   router.push({ name: mode.name })
 }
+
+onMounted(async () => {
+  try {
+    const result = await createDailyQuestions()
+    console.log('Daily questions:', result)
+  } catch (error) {
+    console.error('Error creating daily questions:', error)
+  }
+})
 </script>
 
 <style scoped>

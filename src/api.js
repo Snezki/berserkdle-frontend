@@ -40,10 +40,20 @@ export const getAllCharacters = async () => {
 
 export const getCharacterNames = async () => {
   try {
-    const response = await apiClient.get('/characters');
-    return response.data; // This will be an array of names
+    const response = await apiClient.get('/characters')
+    return response.data
   } catch (error) {
-    console.error('Error fetching character names:', error);
-    throw error;
+    console.error('Error fetching character names:', error)
+    throw error
+  }
+}
+
+export const createDailyQuestions = async () => {
+  try {
+    const response = await apiClient.get('/create-questions')
+    return response.data
+  } catch (error) {
+    console.error('Error creating daily questions:', error)
+    throw error
   }
 }
