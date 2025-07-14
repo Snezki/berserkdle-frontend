@@ -11,6 +11,7 @@
         @input="showSuggestions = true"
         @keydown="handleKeydown"
         autocomplete="off"
+        :disabled="props.disabled"
       />
       <ul v-if="filteredSuggestions.length && guess && showSuggestions" class="suggestions-list">
         <li
@@ -27,12 +28,15 @@
 </template>
 
 <script setup>
-import { ref, computed, defineEmits, defineProps, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, defineEmits, defineProps, onMounted, onBeforeUnmount, watch } from 'vue'
 import { getCharacterNames } from '../api'
-const emit = defineEmits(['submit'])
+
 const props = defineProps({
   placeholder: { type: String, default: 'Enter character name' },
-  success: { type: Boolean, default: false }
+  success: { type: Boolean, default: false },
+  resetKey: { type: [String, Number], default: '' },
+  guessHistory: { type: Array, default: () => [] },
+  disabled: { type: Boolean, default: false }
 })
 const guess = ref('')
 const showSuggestions = ref(false)
@@ -40,13 +44,17 @@ const root = ref(null)
 const suggestions = ref([])
 const fetched = ref(false)
 
-const filteredSuggestions = computed(() =>
-  guess.value
+const emit = defineEmits(['submit'])
+
+const filteredSuggestions = computed(() => {
+  const guessedNames = props.guessHistory.map(g => g.value.toLowerCase())
+  return guess.value
     ? suggestions.value.filter(name =>
-        name.toLowerCase().includes(guess.value.toLowerCase())
+        name.toLowerCase().includes(guess.value.toLowerCase()) &&
+        !guessedNames.includes(name.toLowerCase())
       )
-    : []
-)
+    : suggestions.value.filter(name => !guessedNames.includes(name.toLowerCase()))
+})
 
 async function fetchSuggestions() {
   if (!fetched.value) {
@@ -56,7 +64,6 @@ async function fetchSuggestions() {
 }
 
 function submit() {
-  // Only allow submission if the guess matches a character name (case-insensitive)
   const match = suggestions.value.find(
     name => name.toLowerCase() === guess.value.trim().toLowerCase()
   )
@@ -65,12 +72,11 @@ function submit() {
     guess.value = ''
     showSuggestions.value = false
   }
-  // Otherwise, do nothing (or you could show a warning if desired)
 }
 
 function selectSuggestion(suggestion) {
   guess.value = suggestion
-  emit('submit', suggestion)
+  submit()
   showSuggestions.value = false
 }
 
@@ -87,9 +93,14 @@ function handleKeydown(event) {
   }
 }
 
+watch(() => props.resetKey, () => {
+  guess.value = ''
+})
+
 onMounted(() => {
   document.addEventListener('mousedown', handleClickOutside)
 })
+
 onBeforeUnmount(() => {
   document.removeEventListener('mousedown', handleClickOutside)
 })
@@ -105,9 +116,11 @@ onBeforeUnmount(() => {
   width: 220px;
   transition: background 0.2s;
 }
+
 .success-bg {
   background: #b6fcb6 !important;
 }
+
 .suggestions-list {
   position: absolute;
   background: #fff;
@@ -121,13 +134,16 @@ onBeforeUnmount(() => {
   list-style: none;
   left: 0;
 }
+
 .suggestions-list li {
   padding: 8px 12px;
   cursor: pointer;
 }
+
 .suggestions-list li:hover {
   background: #eee;
 }
+
 .submit-btn {
   margin-top: 10px;
   padding: 10px 24px;
@@ -139,6 +155,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
   transition: background 0.2s;
 }
+
 .submit-btn:hover {
   background: #444;
 }

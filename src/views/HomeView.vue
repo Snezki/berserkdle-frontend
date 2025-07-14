@@ -27,8 +27,8 @@ function selectMode(mode) {
 
 onMounted(async () => {
   try {
+    // eslint-disable-next-line no-unused-vars
     const result = await createDailyQuestions()
-    console.log('Daily questions:', result)
   } catch (error) {
     console.error('Error creating daily questions:', error)
   }
@@ -42,16 +42,19 @@ onMounted(async () => {
   align-items: center;
   margin-top: 60px;
 }
+
 .logo {
   width: 380px;
   margin-bottom: 20px;
 }
+
 .menu-buttons {
   display: flex;
   flex-direction: column;
   gap: 20px;
   margin-top: 30px;
 }
+
 button {
   display: flex;
   align-items: center;
@@ -65,9 +68,11 @@ button {
   cursor: pointer;
   transition: background 0.2s;
 }
+
 button:hover {
   background: #444;
 }
+
 .mode-icon {
   width: 32px;
   height: 32px;

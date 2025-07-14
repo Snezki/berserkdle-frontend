@@ -19,15 +19,11 @@ function goHome() {
 
 <style scoped>
 .app-header {
-  width: 100vw;
+  width: 100%;
   background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
 }
 .header-logo {
   margin-top: 20px;

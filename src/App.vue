@@ -32,6 +32,6 @@ nav a.router-link-exact-active {
 }
 
 .main-content {
-  margin-top: 180px;
+  margin-top: 20px;
 }
 </style>
