@@ -39,9 +39,6 @@ onMounted(async () => {
   question.value = quote.question
   characterQuote.value = quote.quotes
   answer.value = quote.character
-  console.log('Question:', question.value)
-  console.log('Character Quote:', characterQuote.value)
-  console.log('Answer:', answer.value)
 })
 </script>
 
