@@ -1,6 +1,5 @@
 <template>
   <div class="home-view">
-    <img src="@/assets/logo-removebg-preview.png" alt="Berserkdle Logo" class="logo" />
     <div class="menu-buttons">
       <button v-for="mode in modes" :key="mode.name" @click="selectMode(mode)">
         <img v-if="mode.icon" :src="mode.icon" :alt="mode.label" class="mode-icon" />

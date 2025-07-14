@@ -1,6 +1,13 @@
 <template>
-  <router-view/>
+  <AppHeader />
+  <div class="main-content">
+    <router-view />
+  </div>
 </template>
+
+<script setup>
+import AppHeader from './components/AppHeader.vue'
+</script>
 
 <style>
 #app {
@@ -22,5 +29,9 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.main-content {
+  margin-top: 180px;
 }
 </style>
