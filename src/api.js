@@ -7,16 +7,6 @@ const apiClient = axios.create({
     },
 })
 
-export const getCharacters = async () => {
-    try {
-      const response = await apiClient.get('/characters')
-      return response.data
-    } catch (error) {
-      console.error('Error fetching characters:', error)
-      throw error
-    }
-}
-
 export const getDailyQuote = async () => {
     try {
       console.log('Fetching quote question...')
@@ -30,22 +20,12 @@ export const getDailyQuote = async () => {
 
 export const getAllCharacters = async () => {
     try {
-      const response = await apiClient.get(`/characters`)
+      const response = await apiClient.get('/characters')
       return response.data
     } catch (error) {
       console.error('Error fetching characters:', error)
       throw error
     }
-}
-
-export const getCharacterNames = async () => {
-  try {
-    const response = await apiClient.get('/characters')
-    return response.data
-  } catch (error) {
-    console.error('Error fetching character names:', error)
-    throw error
-  }
 }
 
 export const createDailyQuestions = async () => {

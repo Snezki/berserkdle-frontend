@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HelloWorld msg="WELCOME TO BERSERKDLE"/>
+    <h1>WELCOME TO BERSERKDLE<h1/>
     <div v-if="dailyQuestion">
       <h2>Today's Question</h2>
       <p>{{ dailyQuestion.question }}</p>
